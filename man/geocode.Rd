@@ -7,10 +7,10 @@
 \usage{
 geocode(location, output = c("latlon", "latlona", "more", "all"),
   source = c("google", "dsk"), messaging = FALSE, force = ifelse(source ==
-  "dsk", FALSE, TRUE), sensor = FALSE, override_limit = FALSE,
-  client = "", signature = "", nameType = c("long", "short"), data)
+  "dsk", FALSE, TRUE), urlonly = FALSE, override_limit = FALSE,
+  nameType = c("long", "short"), ext = "com", inject = "", ...)
 
-geocodeQueryCheck(userType = "free")
+geocodeQueryCheck()
 }
 \arguments{
 \item{location}{a character vector of street addresses or place
@@ -27,25 +27,20 @@ Google}
 
 \item{force}{force online query, even if previously downloaded}
 
-\item{sensor}{whether or not the geocoding request comes from a
-device with a location sensor}
+\item{urlonly}{return only the url?}
 
 \item{override_limit}{override the current query count
 (.GoogleGeocodeQueryCount)}
-
-\item{client}{client ID for business users, see
-\url{https://developers.google.com/maps/documentation/business/webservices/auth}}
-
-\item{signature}{signature for business users, see
-\url{https://developers.google.com/maps/documentation/business/webservices/auth}}
 
 \item{nameType}{in some cases, Google returns both a long name
 and a short name. this parameter allows the user to specify
 which to grab.}
 
-\item{data}{deprecated in 2.5, use \code{\link{mutate_geocode}}}
+\item{ext}{domain extension (e.g. "com", "co.nz")}
 
-\item{userType}{User type, "free" or "business"}
+\item{inject}{character string to add to the url}
+
+\item{...}{...}
 }
 \value{
 If \code{output} is "latlon", "latlona", or "more", a
@@ -60,28 +55,39 @@ Maps API Terms of Service at
 \url{https://developers.google.com/maps/terms}.
 }
 \details{
-Note that the Google Maps api limits to 2500 queries a day. Use
+Note that the Google Maps API limits to 2500 queries a day. Use
 \code{geocodeQueryCheck} to determine how many queries remain.
 }
 \examples{
 
 \dontrun{ # Server response can be slow; this cuts down check time.
 
-# types of input
+##### basic usage
+########################################
+
 geocode("houston texas")
-geocode("baylor university") # see known issues below
 geocode("1600 pennsylvania avenue, washington dc")
 geocode("the white house")
-geocode(c("baylor university", "salvation army waco"))
+geocode(c("the white house", "washington dc"))
+# see also mutate_geocode()
+geocode("ninos", inject = "region=es", urlonly = TRUE)
 
 
-
+##### types of output
+########################################
 
 # types of output
 geocode("houston texas", output = "latlona")
 geocode("houston texas", output = "more")
 geocode("Baylor University", output = "more")
 str(geocode("Baylor University", output = "all"))
+
+
+##### interfacing with the google geocoding api
+########################################
+
+register_google(key = "your code here")
+geocode("houston texas")
 
 
 # see how many requests we have left with google
@@ -91,10 +97,13 @@ geocode("houston texas", force = TRUE)
 
 
 
-# known issues :
-# (1) source = "dsk" can't reliably geocode colloquial place names
+##### known issues
+########################################
+# sources often have a hard time reliably geocoding colloquial place names
 geocode("city hall houston")
+geocode("city hall houston texas")
 geocode("rice university")
+geocode("rice university houston texas")
 
 
 }
@@ -105,6 +114,7 @@ David Kahle \email{david.kahle@gmail.com}
 }
 \seealso{
 \code{\link{mutate_geocode}},
-  \url{http://code.google.com/apis/maps/documentation/geocoding/}
+  \url{http://code.google.com/apis/maps/documentation/geocoding/},
+  \url{https://developers.google.com/maps/documentation/geocoding/usage-limits}
 }
 

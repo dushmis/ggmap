@@ -6,8 +6,9 @@
 \usage{
 route(from, to, mode = c("driving", "walking", "bicycling", "transit"),
   structure = c("legs", "route"), output = c("simple", "all"),
-  alternatives = FALSE, messaging = FALSE, sensor = FALSE,
-  override_limit = FALSE)
+  alternatives = FALSE, units = "metric", messaging = FALSE,
+  urlonly = FALSE, override_limit = FALSE, ext = "com", inject = "",
+  ...)
 }
 \arguments{
 \item{from}{name of origin addresses in a data frame (vector
@@ -24,13 +25,20 @@ accepted)}
 
 \item{alternatives}{should more than one route be provided?}
 
+\item{units}{"metric"}
+
 \item{messaging}{turn messaging on/off}
 
-\item{sensor}{whether or not the geocoding request comes from a
-device with a location sensor}
+\item{urlonly}{return only the url?}
 
 \item{override_limit}{override the current query count
 (.GoogleRouteQueryCount)}
+
+\item{ext}{domain extension (e.g. "com", "co.nz")}
+
+\item{inject}{character string to add to the url}
+
+\item{...}{...}
 }
 \value{
 a data frame (output="simple") or all of the geocoded
@@ -48,10 +56,17 @@ at https://developers.google.com/maps/terms.
 from <- "houson, texas"
 to <- "waco, texas"
 route_df <- route(from, to, structure = "route")
+trek_df  <-  trek(from, to, structure = "route")
 qmap("college station, texas", zoom = 8) +
   geom_path(
-    aes(x = lon, y = lat),  colour = "red", size = 1.5,
+    aes(x = lon, y = lat),  colour = "red",
+    size = 1.5, alpha = .5,
     data = route_df, lineend = "round"
+  ) +
+  geom_path(
+    aes(x = lon, y = lat),  colour = "blue",
+    size = 1.5, alpha = .5,
+    data = trek_df, lineend = "round"
   )
 
 qmap("college station, texas", zoom = 6) +
@@ -64,7 +79,6 @@ routeQueryCheck()
 
 
 
-
 }
 
 }
@@ -73,7 +87,8 @@ David Kahle \email{david.kahle@gmail.com}
 }
 \seealso{
 \url{https://developers.google.com/maps/documentation/directions/},
-\code{\link{legs2route}}, \code{\link{routeQueryCheck}},
-\code{\link{geom_leg}}
+\code{\link{trek}}, \code{\link{legs2route}},
+\code{\link{routeQueryCheck}}, \code{\link{geom_leg}},
+\code{\link{register_google}}
 }
 
