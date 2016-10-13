@@ -104,10 +104,12 @@ geocode <- function(location, output = c("latlon", "latlona", "more", "all"),
   # vectorize for many locations
   if(length(location) > 1){
     # set limit
-    if(goog_account() == "standard"){
+    if(has_goog_account() && goog_account() == "standard"){
       limit <- "2500"
-    } else if(goog_account() == "premium"){
+    } else if(has_goog_account() && goog_account() == "premium"){
       limit <- "100000"
+    } else { # if ggmap's not loaded
+      limit <- "2500"
     }
 
     # message/stop as neeeded
@@ -136,11 +138,11 @@ geocode <- function(location, output = c("latlon", "latlona", "more", "all"),
   if(source == "google"){
 
     # add google account stuff
-    if (has_client() && has_signature()) {
+    if (has_goog_client() && has_goog_signature()) {
       client <- goog_client()
       signature <- goog_signature()
       posturl <- paste(posturl, fmteq(client), fmteq(signature), sep = "&")
-    } else if (has_key()) {
+    } else if (has_goog_key()) {
       key <- goog_key()
       posturl <- paste(posturl, fmteq(key), sep = "&")
     }
