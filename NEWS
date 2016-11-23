@@ -17,6 +17,7 @@ NEW FEATURES
 * google functions have domain name extension options, urlonly options,
   and inject options for any code that you manually want to pass to the
   url (i.e. anything that isn't built into ggmap).
+* mode = "transit" can now be used with mapdist().
 
 
 CHANGES
@@ -38,7 +39,7 @@ FIXES
   sets. (#98, #89, thanks dapper2dan)
 * google functions now better handle special characters. (#104, thanks
   casa-henrym)
-* gglocator now properly works again. (#87, thanks @salah31416)
+* gglocator now properly works again. (#87, thanks @salah31416 and @mvkorpel)
 
 
 ggmap 2.6.1

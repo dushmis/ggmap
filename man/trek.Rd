@@ -51,7 +51,7 @@ https://developers.google.com/maps/terms.
 
 \dontrun{ # to cut down on check time
 
-from <- "houson, texas"
+from <- "houston, texas"
 to <- "waco, texas"
 route_df <- route(from, to, structure = "route")
 trek_df <- trek(from, to, structure = "route")
@@ -76,8 +76,18 @@ qmplot(lon, lat, data = trek_df, geom = "path", maptype = "terrain",
   color = I("red"), size = I(2), alpha = I(.5)
 )
 
+trek_df <- trek(from, to, mode = "walking")
+qmplot(lon, lat, data = trek_df, geom = "path", maptype = "terrain",
+  color = I("red"), size = I(2), alpha = I(.5)
+)
 
-from <- "houson, texas"; to <- "waco, texas"
+trek_df <- trek(from, to, mode = "transit")
+qmplot(lon, lat, data = trek_df, geom = "path", maptype = "terrain",
+  color = I("red"), size = I(2), alpha = I(.5)
+)
+
+
+from <- "houston, texas"; to <- "waco, texas"
 trek_df <- trek(from, to, alternatives = TRUE)
 qmplot(lon, lat, data = trek_df, geom = "path",
   color = route, size = I(2), alpha = I(.5)

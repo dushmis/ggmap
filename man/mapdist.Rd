@@ -4,7 +4,7 @@
 \alias{mapdist}
 \title{Compute map distances using Google}
 \usage{
-mapdist(from, to, mode = c("driving", "walking", "bicycling"),
+mapdist(from, to, mode = c("driving", "walking", "bicycling", "transit"),
   output = c("simple", "all"), messaging = FALSE, language = "en-EN",
   urlonly = FALSE, override_limit = FALSE, ext = "com", inject = "",
   ...)
@@ -51,7 +51,7 @@ if parameters from and to are specified as geographic
 }
 \examples{
 
-\dontrun{ online queries draw R CMD check times
+\dontrun{# online queries draw R CMD check times
 
 mapdist("waco, texas", "houston, texas")
 
@@ -60,6 +60,12 @@ to <- "waco, texas"
 mapdist(from, to)
 mapdist(from, to, mode = "bicycling")
 mapdist(from, to, mode = "walking")
+
+# google requires a key for mode="transit"
+register_google(key = "[your key here]")
+from <- "city hall houston texas"
+to <- "nrg stadium houston texas"
+mapdist(from, to, mode = "transit")
 
 from <- c("houston", "houston", "dallas")
 to <- c("waco, texas", "san antonio", "houston")

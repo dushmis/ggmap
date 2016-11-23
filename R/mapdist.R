@@ -29,7 +29,7 @@
 #' @export
 #' @examples
 #'
-#' \dontrun{ online queries draw R CMD check times
+#' \dontrun{# online queries draw R CMD check times
 #'
 #' mapdist("waco, texas", "houston, texas")
 #'
@@ -38,6 +38,12 @@
 #' mapdist(from, to)
 #' mapdist(from, to, mode = "bicycling")
 #' mapdist(from, to, mode = "walking")
+#'
+#' # google requires a key for mode="transit"
+#' register_google(key = "[your key here]")
+#' from <- "city hall houston texas"
+#' to <- "nrg stadium houston texas"
+#' mapdist(from, to, mode = "transit")
 #'
 #' from <- c("houston", "houston", "dallas")
 #' to <- c("waco, texas", "san antonio", "houston")
@@ -52,7 +58,7 @@
 #'
 #' }
 #'
-mapdist <- function(from, to, mode = c("driving","walking","bicycling"),
+mapdist <- function(from, to, mode = c("driving","walking","bicycling","transit"),
   output = c("simple","all"), messaging = FALSE,
   language = "en-EN", urlonly = FALSE, override_limit = FALSE,
   ext = "com", inject = "", ...)
@@ -64,8 +70,6 @@ mapdist <- function(from, to, mode = c("driving","walking","bicycling"),
   if(is.numeric(to) && length(to) == 2) to <- revgeocode(to)
   stopifnot(is.character(to))
   from_to_df <- data.frame(from = from, to = to, stringsAsFactors = FALSE)
-  origins <- from_to_df$from
-  destinations <- from_to_df$to # this ensures # from = # to
   mode <- match.arg(mode)
   output <- match.arg(output)
   stopifnot(is.logical(messaging))
