@@ -4,11 +4,10 @@
 #'
 #' @param zoom google zoom
 #' @return scale
-#' @details The calculation of an appropriate OSM scale value for a
-#'   given zoom level is a complicated task.  For details, see
-#'   \url{http://wiki.openstreetmap.org/wiki/FAQ} or
-#'   \url{http://almien.co.uk/OSM/Tools/Scale/}.
-#' @author David Kahle \email{david.kahle@@gmail.com}
+#' @details The calculation of an appropriate OSM scale value for a given zoom
+#'   level is a complicated task.  For details, see
+#'   \url{http://wiki.openstreetmap.org/wiki/FAQ}
+#' @author David Kahle \email{david@@kahle.io}
 #' @export
 #' @examples
 #'

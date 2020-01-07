@@ -19,9 +19,8 @@ Print a console description of a map
 }
 \examples{
 
-get_map()
-ggmap(get_map())
+
+get_stamenmap(zoom = 9)
 
 
 }
-

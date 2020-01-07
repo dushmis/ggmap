@@ -14,17 +14,16 @@ get_openstreetmap(bbox = c(left = -95.80204, bottom = 29.38048, right =
 upperrightlon, upperrightlat)}
 
 \item{scale}{scale parameter, see
-  \url{http://wiki.openstreetmap.org/wiki/MinScaleDenominator}.  smaller
-  scales provide a finer degree of detail, where larger scales produce more
-  coarse detail.
-
-  The scale argument is a tricky number to correctly specify. In most cases,
-  if you get an error when downloading an openstreetmap the error is
-  attributable to an improper scale specification.
-  \code{\link{OSM_scale_lookup}} can help; but the best way to get in the
-  correct range is to go to \url{http://www.openstreetmap.org/}, navigate to
-  the map of interest, click export at the top of the page, click 'map image'
-  and then copy down the scale listed.}
+\url{http://wiki.openstreetmap.org/wiki/MinScaleDenominator}.  smaller
+scales provide a finer degree of detail, where larger scales produce more
+coarse detail.
+The scale argument is a tricky number to correctly specify. In most cases,
+if you get an error when downloading an openstreetmap the error is
+attributable to an improper scale specification.
+\code{\link[=OSM_scale_lookup]{OSM_scale_lookup()}} can help; but the best way to get in the
+correct range is to go to \url{http://www.openstreetmap.org/}, navigate to
+the map of interest, click export at the top of the page, click 'map image'
+and then copy down the scale listed.}
 
 \item{format}{character string providing image format - png, jpeg, svg, pdf,
 and ps formats}
@@ -34,7 +33,7 @@ and ps formats}
 \item{urlonly}{return url only}
 
 \item{filename}{destination file for download (file extension added according
-to format). Default \code{NULL} means a random \code{\link{tempfile}}.}
+to format). Default \code{NULL} means a random \code{\link[=tempfile]{tempfile()}}.}
 
 \item{color}{color or black-and-white}
 
@@ -44,7 +43,7 @@ to format). Default \code{NULL} means a random \code{\link{tempfile}}.}
 a ggmap object (a classed raster object with a bounding box attribute)
 }
 \description{
-\code{get_openstreetmap} accesses a tile server for OpenStreetMap and
+\code{\link[=get_openstreetmap]{get_openstreetmap()}} accesses a tile server for OpenStreetMap and
 downloads/formats a map image. This is simply a wrapper for the web-based
 version at \url{http://www.openstreetmap.org/}.  If you don't know how to
 get the map you want, go there, navigate to the map extent that you want,
@@ -62,21 +61,19 @@ information.
 }
 \examples{
 
-get_openstreetmap(urlonly = TRUE)
-\dontrun{
+# get_openstreetmap(urlonly = TRUE)
+
 # osm servers get overloaded, which can result in
 # erroneous failed checks
 
-osm <- get_openstreetmap()
-ggmap(osm)
+# osm <- get_openstreetmap()
+# ggmap(osm)
 
-}
 
-}
-\author{
-David Kahle \email{david.kahle@gmail.com}
 }
 \seealso{
-\url{http://www.openstreetmap.org/}, \code{\link{ggmap}}
+\url{http://www.openstreetmap.org/}, \code{\link[=ggmap]{ggmap()}}
 }
-
+\author{
+David Kahle \email{david@kahle.io}
+}

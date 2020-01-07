@@ -1,26 +1,30 @@
 #' Plot a ggmap object
 #'
-#' ggmap plots the raster object produced by \code{\link{get_map}}.
+#' ggmap plots the raster object produced by [get_map()].
 #'
 #' @param ggmap an object of class ggmap (from function get_map)
-#' @param extent how much of the plot should the map take up?
-#'   "normal", "device", or "panel" (default)
+#' @param extent how much of the plot should the map take up? "normal",
+#'   "device", or "panel" (default)
 #' @param base_layer a ggplot(aes(...), ...) call; see examples
-#' @param maprange logical for use with base_layer; should the map
-#'   define the x and y limits?
-#' @param legend "left", "right" (default), "bottom", "top",
-#'   "bottomleft", "bottomright", "topleft", "topright", "none"
-#'   (used with extent = "device")
-#' @param padding distance from legend to corner of the plot (used
-#'   with legend, formerly b)
-#' @param darken vector of the form c(number, color), where number
-#'   is in [0, 1] and color is a character string indicating the
-#'   color of the darken.  0 indicates no darkening, 1 indicates a
-#'   black-out.
+#' @param maprange logical for use with base_layer; should the map define the x
+#'   and y limits?
+#' @param legend "left", "right" (default), "bottom", "top", "bottomleft",
+#'   "bottomright", "topleft", "topright", "none" (used with extent = "device")
+#' @param padding distance from legend to corner of the plot (used with legend,
+#'   formerly b)
+#' @param darken vector of the form c(number, color), where number is in (0,1)
+#'   and color is a character string indicating the color of the darken.  0
+#'   indicates no darkening, 1 indicates a black-out.
+#' @param b Deprecated, renamed to `padding`. Overrides any `padding` argument.
+#' @param fullpage Deprecated, equivalent to `extent = "device"` when `TRUE`.
+#'   Overrides any `extent` argument.
+#' @param expand Deprecated, equivalent to `extent = "panel"` when `TRUE` and
+#'   `fullpage` is `FALSE`. When `fullpage` is `FALSE` and `expand` is `FALSE`,
+#'   equivalent to `extent="normal"`. Overrides any `extent` argument.
 #' @param ... ...
 #' @return a ggplot object
-#' @author David Kahle \email{david.kahle@@gmail.com}
-#' @seealso \code{\link{get_map}}, \code{\link{qmap}}
+#' @author David Kahle \email{david@@kahle.io}
+#' @seealso [get_map()], [qmap()]
 #' @export ggmap inset inset_raster
 #' @examples
 #'
@@ -424,7 +428,7 @@
 #'
 #' }
 ggmap <- function(ggmap, extent = "panel", base_layer, maprange = FALSE,
-  legend = "right", padding = .02, darken = c(0, "black"), ...)
+  legend = "right", padding = .02, darken = c(0, "black"), b, fullpage, expand, ...)
 {
 
   # dummies to trick R CMD check
@@ -433,22 +437,16 @@ ggmap <- function(ggmap, extent = "panel", base_layer, maprange = FALSE,
   ll.lat <- NULL; rm(ll.lat); ur.lat <- NULL; rm(ur.lat);
 
   # deprecated syntaxes
-  args <- as.list(match.call(expand.dots = TRUE)[-1])
-  if("ggmapplot" %in% names(args)){
-    .Deprecated(msg = "ggmapplot syntax deprecated, use ggmap.")
-  }
-
-  if("b" %in% names(args)){
+  if(!missing(b)) {
     .Deprecated(msg = "b syntax deprecated, use padding.")
-    b <- NULL; rm(b);
-    padding <- eval(args$b)
+    padding <- b
   }
 
-  if("fullpage" %in% names(args) || "expand" %in% names(args)){
+  if(!missing(fullpage) || !missing(expand)){
     .Deprecated(msg = "fullpage and expand syntaxes deprecated, use extent.")
-    if("fullpage" %in% names(args)){fullpage <- eval(args$fullpage)}else{fullpage <- FALSE}
+    if(missing(fullpage)) { fullpage <- FALSE }
+    if(missing(expand)) { expand <- FALSE }
     if(fullpage) extent <- "device"
-    if("expand" %in% names(args)){expand <- eval(args$expand)}else{expand <- FALSE}
     if(fullpage == FALSE && expand == TRUE) extent <- "panel"
     if(fullpage == FALSE && expand == FALSE) extent <- "normal"
   }
@@ -528,7 +526,7 @@ ggmap <- function(ggmap, extent = "panel", base_layer, maprange = FALSE,
   if(maprange) p <- p + xlim(xmin, xmax) + ylim(ymin, ymax)
 
   # set scales
-  p <- p + coord_map(projection = "mercator")
+  p <- p + coord_map2()
 
   # set extent
   xmin <- attr(ggmap, "bb")$ll.lon
@@ -584,17 +582,17 @@ ggmap <- function(ggmap, extent = "panel", base_layer, maprange = FALSE,
 
 #' Don't use this function, use ggmap.
 #'
-#' ggmap plots the raster object produced by \code{\link{get_map}}.
+#' ggmap plots the raster object produced by [get_map()].
 #'
-#' @param ggmap an object of class ggmap (from function get_map)
+#' @param ggmap an object of class ggmap (from function [get_map()])
 #' @param fullpage logical; should the map take up the entire viewport?
 #' @param base_layer a ggplot(aes(...), ...) call; see examples
 #' @param maprange logical for use with base_layer; should the map define the x and y limits?
 #' @param expand should the map extend to the edge of the panel? used with base_layer and maprange=TRUE.
 #' @param ... ...
 #' @return a ggplot object
-#' @author David Kahle \email{david.kahle@@gmail.com}
-#' @seealso \code{\link{get_map}}, \code{\link{qmap}}
+#' @author David Kahle \email{david@@kahle.io}
+#' @seealso [get_map()], [qmap()]
 #' @export
 #' @examples
 #' \dontrun{
@@ -603,6 +601,7 @@ ggmap <- function(ggmap, extent = "panel", base_layer, maprange = FALSE,
 ggmapplot <- function(ggmap, fullpage = FALSE,
   base_layer, maprange = FALSE, expand = FALSE, ...)
 {
+  .Deprecated(msg = "ggmapplot syntax deprecated, use ggmap.")
   ggmap(ggmap, fullpage = fullpage, base_layer = base_layer,
     maprange = FALSE, expand = FALSE, ggmapplot = TRUE)
 }
